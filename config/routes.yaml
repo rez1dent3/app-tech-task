@@ -1,0 +1,6 @@
+blog_index:
+  path: /
+  controller: App\Controller\BlogController::index
+  methods:
+    - GET
+    - HEAD

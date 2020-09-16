@@ -1,0 +1,74 @@
+imports:
+  - { resource: 'app.yaml' }
+  - { resource: 'doctrine.yaml' }
+
+services:
+
+  loader_yaml:
+    public: true
+    class: Symfony\Component\Routing\Loader\YamlFileLoader
+    arguments: [ '@locator' ]
+
+  request:
+    public: true
+    class: Symfony\Component\HttpFoundation\Request
+    factory: [ Symfony\Component\HttpFoundation\Request, 'createFromGlobals' ]
+
+  request_stack:
+    class: Symfony\Component\HttpFoundation\RequestStack
+
+  request_context:
+    class: Symfony\Component\Routing\RequestContext
+    calls:
+      - fromRequest: [ "@request" ]
+
+  matcher:
+    class: Symfony\Component\Routing\Matcher\UrlMatcher
+    arguments:
+      - '@=service("loader_yaml").load("routes.yaml")'
+      - '@request_context'
+
+  router_listener:
+    class: Symfony\Component\HttpKernel\EventListener\RouterListener
+    arguments: [ '@matcher', '@request_stack' ]
+
+  dispatcher:
+    class: Symfony\Component\EventDispatcher\EventDispatcher
+    calls:
+      - addSubscriber: [ "@router_listener" ]
+
+  controller_resolver:
+    class: Symfony\Component\HttpKernel\Controller\ControllerResolver
+
+  argument_resolver.container_builder:
+    class: App\ValueResolver\DIArgumentResolver
+    arguments: [ '@service_container' ]
+
+  argument_resolver.entity_manager:
+    class: App\ValueResolver\EntityManagerArgumentResolver
+    arguments: [ '@service_container' ]
+
+  argument_resolver.request_attribute:
+    class: Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestAttributeValueResolver
+
+  argument_resolver.request:
+    class: Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver
+
+  argument_resolver:
+    class: Symfony\Component\HttpKernel\Controller\ArgumentResolver
+    arguments:
+      0: null
+      1:
+        - '@argument_resolver.entity_manager'
+        - '@argument_resolver.container_builder'
+        - '@argument_resolver.request_attribute'
+        - '@argument_resolver.request'
+
+  kernel:
+    public: true
+    class: Symfony\Component\HttpKernel\HttpKernel
+    arguments:
+      - '@dispatcher'
+      - '@controller_resolver'
+      - '@request_stack'
+      - '@argument_resolver'

@@ -1,0 +1,16 @@
+parameters:
+  dbal:
+    url: '%env(resolve:DATABASE_URL)%'
+
+services:
+
+  doctrine.setup:
+    class: Doctrine\ORM\Configuration
+    factory: [ Doctrine\ORM\Tools\Setup, 'createAnnotationMetadataConfiguration' ]
+    arguments: [ [ '%root_dir%/src/Entity' ], false, null, null, false ]
+
+  doctrine.entity_manager:
+    public: true
+    class: Doctrine\ORM\EntityManager
+    factory: [ Doctrine\ORM\EntityManager, 'create' ]
+    arguments: [ '%dbal%', '@doctrine.setup' ]

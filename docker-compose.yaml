@@ -1,0 +1,38 @@
+version: '3.2'
+services:
+  mysql:
+    image: library/mysql:8
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: tech
+      MYSQL_DATABASE: tech
+
+  php_build:
+    image: library/composer:1.10
+    volumes:
+      - .:/app
+    command: composer install --ignore-platform-reqs --no-scripts
+
+  php:
+    build:
+      context: ./docker/php
+    links:
+      - mysql
+    volumes:
+      - .:/var/www/tech
+    depends_on:
+      - mysql
+      - php_build
+    command:
+      - 'php-fpm'
+
+  nginx:
+    image: library/nginx:latest
+    ports:
+      - 80:80
+    links:
+      - php
+    volumes:
+      - .:/var/www/tech
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
