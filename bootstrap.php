@@ -7,9 +7,10 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 include_once __DIR__ . '/vendor/autoload.php';
 
-# load .env
-$dotenv = new Dotenv();
-$dotenv->load(__DIR__ . '/.env');
+if (file_exists(__DIR__ . '.env')) {
+    $dotenv = new Dotenv();
+    $dotenv->load(__DIR__ . '/.env');
+}
 
 // register DI
 $container = new ContainerBuilder();
