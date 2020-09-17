@@ -25,7 +25,7 @@ docker-compose up -d
 docker-compose exec php composer docrtine:schema
 ```
 
-The postman file can be found [here](API.postman_collection.json).
+The postman file can be found [here](https://raw.githubusercontent.com/rez1dent3/app-tech-task/master/API.postman_collection.json).
 
 It worked!
 

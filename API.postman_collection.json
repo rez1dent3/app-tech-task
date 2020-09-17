@@ -144,7 +144,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"data\": {\n    \"type\": \"payments\",\n    \"attributes\": {\n        \"amount\": 22070.46\n    }\n  }\n}"
+					"raw": "{\n  \"data\": {\n    \"type\": \"payments\",\n    \"attributes\": {\n        \"amount\": 10111.8\n    }\n  }\n}"
 				},
 				"url": {
 					"raw": "{{BASE_URL}}/api/orders/1/payments",
