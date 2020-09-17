@@ -18,7 +18,10 @@ cp .env.dev .env
 We collect containers:
 ```bash
 docker-compose up -d
+docker-compose exec php vendor/bin/doctrine orm:schema-tool:create
 ```
+
+The postman file can be found [here](API.postman_collection.json).
 
 It worked!
 

@@ -1,6 +1,29 @@
-blog_index:
-  path: /
-  controller: App\Controller\BlogController::index
+products_index:
+  path: /api/products
+  controller: App\Controller\ProductController::index
   methods:
     - GET
-    - HEAD
+
+products_show:
+  path: /api/products/{id}
+  controller: App\Controller\ProductController::show
+  methods:
+    - GET
+
+products_fixtures:
+  path: /api/products_fixtures
+  controller: App\Controller\ProductController::fixtures
+  methods:
+    - POST
+
+orders_store:
+  path: /api/orders
+  controller: App\Controller\OrderController::store
+  methods:
+    - POST
+
+orders_payments:
+  path: /api/orders/{id}/payments
+  controller: App\Controller\OrderController::payment
+  methods:
+    - POST

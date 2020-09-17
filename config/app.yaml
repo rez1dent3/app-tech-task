@@ -1,2 +1,3 @@
 parameters:
-  app.env: '%env(APP_ENV)%'
+  app_env: '%env(APP_ENV)%'
+  api_url: '%env(API_URL)%'

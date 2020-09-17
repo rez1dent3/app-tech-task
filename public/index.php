@@ -13,7 +13,7 @@ $container = include dirname(__DIR__) . '/bootstrap.php';
 /**
  * Development mode
  */
-if (strpos($container->getParameter('app.env'), 'dev') === 0) {
+if (strpos($container->getParameter('app_env'), 'dev') === 0) {
     Debug::enable();
 }
 

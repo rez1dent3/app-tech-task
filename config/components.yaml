@@ -32,13 +32,62 @@ services:
     class: Symfony\Component\HttpKernel\EventListener\RouterListener
     arguments: [ '@matcher', '@request_stack' ]
 
+  jsonapi.factory:
+    class: App\JsonApi\Factory
+
+  jsonapi.schema_container:
+    public: true
+    class: Neomerx\JsonApi\Schema\SchemaContainer
+    factory: [ '@jsonapi.factory', 'createSchemaContainer' ]
+    arguments:
+      0:
+        App\Entity\Product: App\JsonApi\Schema\ProductSchema
+        App\Entity\Order: App\JsonApi\Schema\OrderSchema
+
+  jsonapi.encoder:
+    public: true
+    class: App\JsonApi\Encoder
+    factory: [ '@jsonapi.factory', 'createEncoder' ]
+    arguments:
+      - '@jsonapi.schema_container'
+    calls:
+      - withUrlPrefix: [ '%api_url%' ]
+
+  jsonapi.headers_listener:
+    class: App\JsonApi\Event\HeadersListener
+
+  jsonapi.response_listener:
+    class: App\JsonApi\Event\ResponseListener
+
+  payment.ya:
+    public: true
+    class: App\Service\Payment\YaPaymentService
+    arguments:
+      - '@guzzle'
+
+  payment.http400:
+    public: true
+    class: App\Service\Payment\HttpStat400PaymentService
+    arguments:
+      - '@guzzle'
+
+  guzzle:
+    public: true
+    class: GuzzleHttp\Client
+
   dispatcher:
     class: Symfony\Component\EventDispatcher\EventDispatcher
     calls:
+      - addSubscriber: [ "@jsonapi.headers_listener" ]
+      - addSubscriber: [ "@jsonapi.response_listener" ]
       - addSubscriber: [ "@router_listener" ]
 
   controller_resolver:
     class: Symfony\Component\HttpKernel\Controller\ControllerResolver
+
+  argument_resolver.encoder:
+    class: App\ValueResolver\EncoderArgumentResolver
+    arguments: [ '@service_container' ]
 
   argument_resolver.container_builder:
     class: App\ValueResolver\DIArgumentResolver
@@ -47,6 +96,10 @@ services:
   argument_resolver.entity_manager:
     class: App\ValueResolver\EntityManagerArgumentResolver
     arguments: [ '@service_container' ]
+
+  argument_resolver.entity:
+    class: App\ValueResolver\EntityArgumentResolver
+    arguments: [ '@doctrine.entity_manager' ]
 
   argument_resolver.request_attribute:
     class: Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestAttributeValueResolver
@@ -59,10 +112,17 @@ services:
     arguments:
       0: null
       1:
-        - '@argument_resolver.entity_manager'
         - '@argument_resolver.container_builder'
         - '@argument_resolver.request_attribute'
+        - '@argument_resolver.entity_manager'
         - '@argument_resolver.request'
+        - '@argument_resolver.encoder'
+        - '@argument_resolver.entity'
+
+  faker:
+    public: true
+    class: Faker\Generator
+    factory: [ Faker\Factory, 'create' ]
 
   kernel:
     public: true

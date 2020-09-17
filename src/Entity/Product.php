@@ -8,10 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Product
  * @package App\Entity
  * @ORM\Entity(repositoryClass="\App\Repository\ProductRepository")
- * @ORM\Table(name="projects")
+ * @ORM\Table(name="products")
+ * @ORM\HasLifecycleCallbacks
  */
 class Product
 {
+
+    use Traits\HasTimestamps;
 
     /**
      * @var int
@@ -29,20 +32,48 @@ class Product
 
     /**
      * @var float
-     * @ORM\Column(type="decimal", precision=7, scale=2)
+     * @ORM\Column(type="decimal", scale=2)
      */
     protected float $price;
 
     /**
-     * @var \DateTimeInterface|null
-     * @ORM\Column(type="datetime")
+     * @param string $name
      */
-    protected ?\DateTimeInterface $createdAt;
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
 
     /**
-     * @var \DateTimeInterface|null
-     * @ORM\Column(type="datetime")
+     * @param float $price
      */
-    protected ?\DateTimeInterface $updatedAt;
+    public function setPrice(float $price): void
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
 
 }
