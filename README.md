@@ -8,25 +8,21 @@ A simple example of working with symfony components.
 * **Based symfony components**: `5.x`
 * **[Composer](https://getcomposer.org/):** `composer create-project --prefer-dist rez1dent3/rez1dent3/app-tech-task`
 
-
 [[API Docs](https://documenter.getpostman.com/view/5325225/TVKA5eob)] 
 [[Demo](https://tech-task-app.herokuapp.com/)] 
+[[Postman File](https://raw.githubusercontent.com/rez1dent3/app-tech-task/master/API.postman_collection.json)]
 
 ### Get started 
 
-Copy and configure .env:
-```
-cp .env.dev .env
-vi .env
-```
-
-Let's get started:
+Builds, creates and attaches to containers for a service.
 ```bash
 docker-compose up -d
-docker-compose exec php composer docrtine:schema
 ```
 
-The postman file can be found [here](https://raw.githubusercontent.com/rez1dent3/app-tech-task/master/API.postman_collection.json).
+Creating a database schema.
+```bash
+docker-compose exec php composer docrtine:schema
+```
 
 It worked!
 
