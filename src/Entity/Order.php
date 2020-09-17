@@ -43,7 +43,7 @@ class Order
 
     /**
      * @var string
-     * @ORM\Column(type="string", columnDefinition="ENUM('new', 'paid')")
+     * @ORM\Column(type="string")
      */
     protected string $status = self::STATUS_NEW;
 
