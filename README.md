@@ -14,12 +14,13 @@ A simple example of working with symfony components.
 
 ### Get started 
 
-Configure .env file:
+Copy and configure .env:
 ```
 cp .env.dev .env
+vi .env
 ```
 
-We collect containers:
+Let's get started:
 ```bash
 docker-compose up -d
 docker-compose exec php composer docrtine:schema
