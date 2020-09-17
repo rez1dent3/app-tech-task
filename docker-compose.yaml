@@ -9,10 +9,11 @@ services:
       MYSQL_DATABASE: tech
 
   php_build:
-    image: library/composer:1.10
+    build:
+      context: ./docker/php
     volumes:
-      - .:/app
-    command: composer install --ignore-platform-reqs --no-scripts
+      - .:/var/www/app
+    command: composer install
 
   php:
     build:
@@ -20,7 +21,7 @@ services:
     links:
       - mysql
     volumes:
-      - .:/var/www/tech
+      - .:/var/www/app
     depends_on:
       - mysql
       - php_build
@@ -34,7 +35,7 @@ services:
     links:
       - php
     volumes:
-      - .:/var/www/tech
+      - .:/var/www/app
       - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./docker/fastcgi-php.conf:/etc/nginx/fastcgi-php.conf
       - ./docker/fastcgi.conf:/etc/nginx/fastcgi.conf
