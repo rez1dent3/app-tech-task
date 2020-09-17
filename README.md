@@ -1,12 +1,16 @@
 ## App tech task
 
-app-tech-task - A simple example of working with symfony components.
+A simple example of working with symfony components.
 
 * **Vendor**: rez1dent3
 * **Package**: app-tech-task
 * **PHP Version**: 7.4
 * **Based symfony components**: `5.x`
 * **[Composer](https://getcomposer.org/):** `composer create-project --prefer-dist rez1dent3/rez1dent3/app-tech-task`
+
+
+[[API Docs](https://documenter.getpostman.com/view/5325225/TVKA5eob)] 
+[[Demo](https://tech-task-app.herokuapp.com/)] 
 
 ### Get started 
 
