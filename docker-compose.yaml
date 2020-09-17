@@ -27,6 +27,10 @@ services:
       - php_build
     command:
       - 'php-fpm'
+    environment:
+      APP_ENV: dev
+      API_URL: http://localhost/api
+      DATABASE_URL: "mysql://root:tech@mysql/tech"
 
   nginx:
     image: library/nginx:latest
